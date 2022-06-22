@@ -12,20 +12,20 @@ export default class Todo extends Component {
     super(props);
     this.state = { description: "", list: [] };
 
-    this.handleSearch = this.handleSearch.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleAdd = this.handleAdd.bind(this);
-    this.handleClear = this.handleClear.bind(this);
     this.handleRemove = this.handleRemove.bind(this);
+    this.handleSearch = this.handleSearch.bind(this);
+
     this.handleMarkAsDone = this.handleMarkAsDone.bind(this);
     this.handleMarkAsPending = this.handleMarkAsPending.bind(this);
+    this.handleClear = this.handleClear.bind(this);
 
     this.refresh();
   }
 
   refresh(description = "") {
     const search = description ? `&description__regex=/${description}/` : "";
-
     axios
       .get(`${URL}?sort=-createdAt${search}`)
       .then((resp) =>

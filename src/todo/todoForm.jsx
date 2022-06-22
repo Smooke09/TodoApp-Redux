@@ -5,7 +5,7 @@ import { bindActionCreators } from "redux";
 import Grid from "../template/grid";
 import IconButton from "../template/iconButton";
 
-import { changeDescription, search } from "./todoActions";
+import { add, changeDescription, search } from "./todoActions";
 
 class TodoForm extends Component {
   constructor(props) {
@@ -13,18 +13,21 @@ class TodoForm extends Component {
     this.keyHandler = this.keyHandler.bind(this);
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.props.search();
   }
 
   keyHandler(e) {
+    const { add, search, description } = this.props;
     if (e.key === "Enter") {
-      e.shiftKey ? this.props.handleSearch() : this.props.handleAdd();
+      e.shiftKey ? search() : add(description);
     } else if (e.key === "Escape") {
-      props.handleClear();
+      this.props.handleClear();
     }
   }
+
   render() {
+    const { add, search, description } = this.props;
     return (
       <div role="form" className="todoForm">
         <Grid cols="12 9 10">
@@ -39,16 +42,13 @@ class TodoForm extends Component {
         </Grid>
 
         <Grid cols="12 3 2">
+          {/* Mudamos o nome da propriedade style para btnStyle, pois o Lint reclamava e essa é a melhor maneira de contornar esse problema */}
           <IconButton
             btnStyle="primary"
             icon="plus"
-            onClick={this.props.handleAdd}
+            onClick={() => add(description)}
           ></IconButton>
-          <IconButton
-            btnStyle="info"
-            icon="search"
-            onClick={this.props.handleSearch}
-          />
+          <IconButton btnStyle="info" icon="search" onClick={() => search()} />
           <IconButton
             btnStyle="default"
             icon="close"
@@ -60,9 +60,7 @@ class TodoForm extends Component {
   }
 }
 
-const mapStateToprops = (state) => ({ description: state.todo.description });
-
+const mapStateToProps = (state) => ({ description: state.todo.description });
 const mapDispatchToProps = (dispatch) =>
-  bindActionCreators({ changeDescription, search }, dispatch);
-
-export default connect(mapStateToprops, mapDispatchToProps)(TodoForm);
+  bindActionCreators({ add, changeDescription, search }, dispatch);
+export default connect(mapStateToProps, mapDispatchToProps)(TodoForm);

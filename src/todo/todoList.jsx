@@ -17,14 +17,14 @@ const TodoList = (props) => {
           />
           <IconButton
             btnStyle="warning"
-            hide={!todo.done}
             icon="undo"
+            hide={!todo.done}
             onClick={() => props.handleMarkAsPending(todo)}
           />
           <IconButton
             btnStyle="danger"
-            hide={!todo.done}
             icon="trash-o"
+            hide={!todo.done}
             onClick={() => props.handleRemove(todo)}
           />
         </td>
@@ -45,5 +45,4 @@ const TodoList = (props) => {
 };
 
 const mapStateToProps = (state) => ({ list: state.todo.list });
-
 export default connect(mapStateToProps)(TodoList);
